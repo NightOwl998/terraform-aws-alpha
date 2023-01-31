@@ -8,26 +8,26 @@ resource "aws_vpc" "main" {
   }
 }
 resource "aws_subnet" "public" {
-  count=length(var.public_cidr)
+  count = length(var.public_cidr)
 
-  vpc_id     = aws_vpc.main.id
-  cidr_block = var.public_cidr[count.index]
-  availability_zone=var.availibilty_zones[count.index]
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.public_cidr[count.index]
+  availability_zone = var.availibilty_zones[count.index]
 
   tags = {
-    Name = "${var.env_code}-public${count.index+1}"
+    Name = "${var.env_code}-public${count.index + 1}"
   }
 }
 resource "aws_subnet" "private" {
-  count=length(var.private_cidr)
+  count = length(var.private_cidr)
 
   vpc_id     = aws_vpc.main.id
   cidr_block = var.private_cidr[count.index]
 
-  availability_zone=var.availibilty_zones[count.index]
+  availability_zone = var.availibilty_zones[count.index]
 
   tags = {
-    Name = "${var.env_code}-private${count.index+1}"
+    Name = "${var.env_code}-private${count.index + 1}"
   }
 }
 
@@ -47,43 +47,43 @@ resource "aws_route_table" "r_p" {
     gateway_id = aws_internet_gateway.gw.id
   }
 
-    tags = {
+  tags = {
     Name = "${var.env_code}-public_route_table"
   }
 }
 resource "aws_route_table_association" "a" {
-  count=length(var.public_cidr)
+  count = length(var.public_cidr)
 
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.r_p.id
 }
 
 resource "aws_eip" "eip" {
-  count=length(var.public_cidr)
+  count = length(var.public_cidr)
 
   vpc = true
   tags = {
-    Name = "${var.env_code}-eip${count.index+1}"
+    Name = "${var.env_code}-eip${count.index + 1}"
   }
-  
+
 }
 
 resource "aws_nat_gateway" "gwNat" {
-  count=length(var.public_cidr)
+  count = length(var.public_cidr)
 
   allocation_id = aws_eip.eip[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
-tags = {
-    Name = "${var.env_code}-nat-gateway${count.index+1}"
+  tags = {
+    Name = "${var.env_code}-nat-gateway${count.index + 1}"
   }
-  
+
 }
 
 
 
 resource "aws_route_table" "r_Nat" {
 
-  count=length(var.private_cidr)
+  count = length(var.private_cidr)
 
   vpc_id = aws_vpc.main.id
 
@@ -92,12 +92,12 @@ resource "aws_route_table" "r_Nat" {
     gateway_id = aws_nat_gateway.gwNat[count.index].id
   }
 
-    tags = {
-    Name = "${var.env_code}-private_route_table${count.index+1}"
+  tags = {
+    Name = "${var.env_code}-private_route_table${count.index + 1}"
   }
 }
 resource "aws_route_table_association" "a_pr" {
-  count=length(var.private_cidr)
+  count = length(var.private_cidr)
 
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.r_Nat[count.index].id
