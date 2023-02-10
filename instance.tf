@@ -1,20 +1,20 @@
 resource "aws_instance" "public" {
-  ami                     = "ami-06e85d4c3149db26a"
-  instance_type           = "t2.micro"
-  subnet_id               = aws_subnet.public[0].id
-  key_name                = "main"
-  vpc_security_group_ids  = [aws_security_group.public.id]
+  ami                         = "ami-06e85d4c3149db26a"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public[0].id
+  key_name                    = "main"
+  vpc_security_group_ids      = [aws_security_group.public.id]
   associate_public_ip_address = true
   tags = {
     name = "${var.env_code}public_instance"
   }
 }
 resource "aws_instance" "private" {
-  ami                     = "ami-06e85d4c3149db26a"
-  instance_type           = "t2.micro"
-  subnet_id               =aws_subnet.private[0].id
-  key_name                = "main"
-  vpc_security_group_ids  = [aws_security_group.private.id]
+  ami                    = "ami-06e85d4c3149db26a"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.private[0].id
+  key_name               = "main"
+  vpc_security_group_ids = [aws_security_group.private.id]
   tags = {
     name = "${var.env_code}private_instance"
   }
@@ -25,13 +25,13 @@ resource "aws_security_group" "public" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description      = "ssh from our lan"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["${var.myIpAddress}/24"]
-    
-    
+    description = "ssh from our lan"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.myIpAddress}/24"]
+
+
   }
 
   egress {
@@ -47,17 +47,17 @@ resource "aws_security_group" "public" {
   }
 }
 resource "aws_security_group" "private" {
-   name        = "${var.env_code}private"
+  name        = "${var.env_code}private"
   description = "Allow ssh inbound traffic from inside the vpc"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description      = "ssh from VPC"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.main.cidr_block]
-    
+    description = "ssh from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+
   }
 
   egress {
