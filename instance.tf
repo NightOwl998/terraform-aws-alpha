@@ -1,5 +1,5 @@
 resource "aws_instance" "public" {
-  ami                         = "ami-06e85d4c3149db26a"
+  ami                         = data.aws_ami.amazonlinux.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public[0].id
   key_name                    = "main"
@@ -10,7 +10,7 @@ resource "aws_instance" "public" {
   }
 }
 resource "aws_instance" "private" {
-  ami                    = "ami-06e85d4c3149db26a"
+  ami                    = data.aws_ami.amazonlinux.id
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.private[0].id
   key_name               = "main"
