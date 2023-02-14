@@ -8,6 +8,7 @@ resource "aws_instance" "public" {
   tags = {
     name = "${var.env_code}public_instance"
   }
+  user_data = file("user-data.sh")
 }
 resource "aws_instance" "private" {
   ami                    = data.aws_ami.amazonlinux.id
@@ -28,6 +29,15 @@ resource "aws_security_group" "public" {
     description = "ssh from our lan"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.myIpAddress}/24"]
+
+
+  }
+  ingress {
+    description = "Allow http traffic"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["${var.myIpAddress}/24"]
 
