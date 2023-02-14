@@ -5,10 +5,11 @@ resource "aws_instance" "public" {
   key_name                    = "main"
   vpc_security_group_ids      = [aws_security_group.public.id]
   associate_public_ip_address = true
+  user_data                   = file("user-data.sh")
   tags = {
     name = "${var.env_code}public_instance"
   }
-  user_data = file("user-data.sh")
+
 }
 resource "aws_instance" "private" {
   ami                    = data.aws_ami.amazonlinux.id
