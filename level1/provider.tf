@@ -7,7 +7,7 @@ terraform {
   }
   backend "s3" {
     bucket         = "terraform-remote-state-d67cd9c15c2"
-    key            = "terraform.tfstate"
+    key            = "level1.tfstate"
     region         = "us-west-2"
     dynamodb_table = "terraform-remote-state"
   }
