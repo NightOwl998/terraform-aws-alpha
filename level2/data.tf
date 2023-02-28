@@ -18,6 +18,16 @@ data "aws_ami" "amazonlinux" {
   }
   owners = ["137112412989"]
 }
+data "terraform_remote_state" "level1" {
+  backend = "s3"
+
+  config = {
+    bucket = "terraform-remote-state-d67cd9c15c2"
+    key    = "level1.tfstate"
+    region = "us-west-2"
+
+  }
+}
 data "aws_availability_zones" "available" {
   state = "available"
 }

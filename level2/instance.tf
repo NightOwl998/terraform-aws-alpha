@@ -1,7 +1,7 @@
 resource "aws_instance" "public" {
   ami                         = data.aws_ami.amazonlinux.id
   instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public[0].id
+  subnet_id                   = data.terraform_remote_state.level1.outputs.public_subnet_id
   key_name                    = "main"
   vpc_security_group_ids      = [aws_security_group.public.id]
   associate_public_ip_address = true
@@ -14,7 +14,7 @@ resource "aws_instance" "public" {
 resource "aws_instance" "private" {
   ami                    = data.aws_ami.amazonlinux.id
   instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.private[0].id
+  subnet_id              = data.terraform_remote_state.level1.outputs.private_subnet_id
   key_name               = "main"
   vpc_security_group_ids = [aws_security_group.private.id]
   tags = {
@@ -24,8 +24,7 @@ resource "aws_instance" "private" {
 resource "aws_security_group" "public" {
   name        = "${var.env_code}public"
   description = "Allow ssh inbound traffic"
-  vpc_id      = aws_vpc.main.id
-
+  vpc_id      = data.terraform_remote_state.level1.outputs.vpc_id
   ingress {
     description = "ssh from our lan"
     from_port   = 22
@@ -60,14 +59,13 @@ resource "aws_security_group" "public" {
 resource "aws_security_group" "private" {
   name        = "${var.env_code}private"
   description = "Allow ssh inbound traffic from inside the vpc"
-  vpc_id      = aws_vpc.main.id
-
+  vpc_id      = data.terraform_remote_state.level1.outputs.vpc_id
   ingress {
     description = "ssh from VPC"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main.cidr_block]
+    cidr_blocks = [var.vpc_cidr]
 
   }
 
