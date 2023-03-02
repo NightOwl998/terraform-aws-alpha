@@ -12,18 +12,7 @@ resource "aws_instance" "public" {
   }
 
 }
-resource "aws_instance" "private" {
-  count                  = 2
-  ami                    = data.aws_ami.amazonlinux.id
-  instance_type          = "t2.micro"
-  subnet_id              = data.terraform_remote_state.level1.outputs.private_subnet_id[count.index]
-  key_name               = "main"
-  vpc_security_group_ids = [aws_security_group.private.id]
-  user_data              = file("user-data.sh")
-  tags = {
-    name = "${var.env_code}private_instance${count.index + 1}"
-  }
-}
+
 resource "aws_security_group" "public" {
   name        = "${var.env_code}public"
   description = "Allow ssh inbound traffic"

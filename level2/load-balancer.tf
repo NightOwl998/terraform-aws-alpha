@@ -51,12 +51,7 @@ resource "aws_lb_target_group" "lb_tg" {
     matcher             = 200 // the response should be ok so we know it is healthy. 
   }
 }
-resource "aws_lb_target_group_attachment" "tgA" {
-  count            = length(aws_instance.private)
-  target_group_arn = aws_lb_target_group.lb_tg.arn
-  target_id        = aws_instance.private[count.index].id
-  port             = 80
-}
+
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.mylb.arn
   port              = "80"
