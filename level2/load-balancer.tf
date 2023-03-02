@@ -31,9 +31,8 @@ resource "aws_lb" "mylb" {
   internal                   = false
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.lb_sg.id]
-  subnets                    = data.terraform_remote_state.level1.outputs.private_subnet_id
-  enable_deletion_protection = true
-
+  subnets                    = data.terraform_remote_state.level1.outputs.public_subnet_id
+  enable_deletion_protection = false
 
 }
 resource "aws_lb_target_group" "lb_tg" {
