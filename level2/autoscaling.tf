@@ -13,9 +13,9 @@ resource "aws_launch_configuration" "my-lt" {
 
 resource "aws_autoscaling_group" "my-asg" {
   name                 = var.env_code
-  desired_capacity     = 2
+  desired_capacity     = 1
   max_size             = 4
-  min_size             = 2
+  min_size             = 1
   target_group_arns    = [aws_lb_target_group.lb_tg.arn]
   vpc_zone_identifier  = data.terraform_remote_state.level1.outputs.private_subnet_id
   launch_configuration = aws_launch_configuration.my-lt.name
