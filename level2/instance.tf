@@ -1,4 +1,3 @@
-
 resource "aws_security_group" "private" {
   name        = "${var.env_code}private"
   description = "Allow http"
