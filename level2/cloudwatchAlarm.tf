@@ -1,5 +1,5 @@
 resource "aws_autoscaling_policy" "my_sp" {
-  name                   =var.env_code
+  name                   = var.env_code
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 300
