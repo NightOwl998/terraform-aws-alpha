@@ -1,4 +1,5 @@
 
-output "loud_balancer_ip" {
-  value = aws_lb.mylb.dns_name
+output "load_balancer_url" {
+  value = module.lb.load_balancer_url
 }
+
