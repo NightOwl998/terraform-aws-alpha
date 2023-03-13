@@ -1,4 +1,4 @@
-module "vpc" {
+module "asg" {
   source            = "../modules/asg"
   env_code          = var.env_code
   vpc_id            = data.terraform_remote_state.level1.outputs.vpc_id
