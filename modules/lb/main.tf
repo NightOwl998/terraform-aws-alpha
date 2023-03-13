@@ -64,3 +64,15 @@ resource "aws_lb_listener" "front_end" {
   }
 }
 
+data "aws_route53_zone" "main" {
+  name = "fadiatestdevops.click"
+
+}
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "www.${data.aws_route53_zone.main.name}"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_lb.mylb.dns_name]
+}
+
