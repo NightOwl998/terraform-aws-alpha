@@ -7,6 +7,9 @@ output "lb_tg_arn" {
 output "lb_sg_id" {
   value = aws_security_group.lb_sg.id
 }
+output "certifivat_arn"{
+  value=aws_acm_certificate.cert.arn
+}
 
 
 
