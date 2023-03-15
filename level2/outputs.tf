@@ -1,8 +1,8 @@
 
-output "load_balancer_url" {
-  value = module.lb.load_balancer_url
+
+output "db_host" {
+  value = module.rds.db_host
 }
 
-output "certifivat_arn"{
-  value=module.lb.certifivat_arn
-}
+
+
