@@ -56,8 +56,8 @@ resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.mylb.arn
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn = aws_acm_certificate.cert.arn
-  
+  certificate_arn   = aws_acm_certificate.cert.arn
+
 
   default_action {
     type             = "forward"
@@ -85,7 +85,7 @@ resource "aws_acm_certificate" "cert" {
     name = var.env_code
   }
 
-  
+
 }
 
 resource "aws_route53_record" "example" {

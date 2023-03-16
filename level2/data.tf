@@ -9,7 +9,14 @@ data "terraform_remote_state" "level1" {
 
   }
 }
- 
+
+data "aws_secretsmanager_secret" "db_psswd" {
+  name = "rds/password"
+}
+data "aws_secretsmanager_secret_version" "db_psswd" {
+  secret_id = data.aws_secretsmanager_secret.db_psswd.id
+  
+}
 
 
 
